@@ -49,6 +49,7 @@ A complete Flutter radio app for streaming live audio from an Icecast server, wi
 
 - Flutter SDK (^3.9.0)
 - Android Studio or Xcode for iOS development
+- Java Development Kit (JDK) 17 or higher (for Android builds to avoid obsolete source/target warnings)
 - Icecast server (version 2.4+ recommended)
 
 ### 1. Icecast Server Setup
@@ -578,6 +579,7 @@ Add to `ios/Runner/Info.plist`:
 - **Metadata not updating:** Ensure Icecast is configured to send metadata
 - **Background playback not working:** Verify permissions and just_audio_background setup
 - **SSL issues:** Use HTTPS URLs and ensure certificates are valid
+- **Obsolete source/target warnings:** Ensure JDK 17+ is installed and configured in Android Studio. The app's build.gradle.kts has been updated to use Java 17 to suppress these warnings.
 
 ### Contributing
 

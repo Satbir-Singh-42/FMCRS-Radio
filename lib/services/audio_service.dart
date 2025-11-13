@@ -40,11 +40,28 @@ class RadioAudioService {
       final response = await http.get(Uri.parse(Config.metadataUrl));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        // Parse Icecast metadata - adjust based on your server response
-        final source = data['icestats']['source'];
-        if (source != null && source.isNotEmpty) {
-          _currentTitle = source[0]['title'] ?? 'Current Song';
-          _currentArtist = source[0]['artist'] ?? 'Artist Name';
+        // Parse Icecast metadata - find the schlagerinstrumental source
+        final sources = data['icestats']['source'];
+        if (sources != null && sources.isNotEmpty) {
+          // Find the source for schlagerinstrumental
+          final instrumentalSource = sources.firstWhere(
+            (source) =>
+                source['listenurl'] != null &&
+                source['listenurl'].contains('schlagerinstrumental'),
+            orElse: () => null,
+          );
+          if (instrumentalSource != null) {
+            final title = instrumentalSource['title'] ?? 'Current Song';
+            // Split title into artist and song if possible
+            if (title.contains(' - ')) {
+              final parts = title.split(' - ');
+              _currentArtist = parts[0].trim();
+              _currentTitle = parts[1].trim();
+            } else {
+              _currentTitle = title;
+              _currentArtist = 'Artist';
+            }
+          }
         }
       }
     } catch (e) {

@@ -15,14 +15,14 @@ class GettingStartedScreen extends StatelessWidget {
           children: [
             // App Logo
             Container(
-              width: 40.w,
-              height: 40.w,
+              width: 30.w.clamp(100, 300),
+              height: 30.w.clamp(100, 300),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFFFFD700), // Yellow accent
                 image: DecorationImage(
                   image: AssetImage('assets/logo.png'),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
