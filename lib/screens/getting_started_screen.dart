@@ -1,8 +1,22 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class GettingStartedScreen extends StatelessWidget {
+class GettingStartedScreen extends StatefulWidget {
   const GettingStartedScreen({super.key});
+
+  @override
+  State<GettingStartedScreen> createState() => _GettingStartedScreenState();
+}
+
+class _GettingStartedScreenState extends State<GettingStartedScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, '/live');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +62,7 @@ class GettingStartedScreen extends StatelessWidget {
             // Next Button
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/home');
+                Navigator.pushReplacementNamed(context, '/live');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,

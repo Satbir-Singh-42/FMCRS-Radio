@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../services/audio_service.dart';
+import '../services/metadata_service.dart';
 
 class LiveStationScreen extends StatefulWidget {
   const LiveStationScreen({super.key});
@@ -16,6 +18,7 @@ class _LiveStationScreenState extends State<LiveStationScreen>
   late Connectivity _connectivity;
   late AnimationController _animationController;
   double _volume = 0.5;
+  late StreamSubscription<Map<String, String>> _metadataSubscription;
 
   @override
   void initState() {
@@ -28,10 +31,11 @@ class _LiveStationScreenState extends State<LiveStationScreen>
     )..repeat(reverse: true);
     _initAudio();
     _listenToConnectivity();
+    _listenToMetadata();
   }
 
   Future<void> _initAudio() async {
-    await _audioService.init();
+    // Audio service now initializes in constructor
     setState(() {});
   }
 
@@ -48,10 +52,17 @@ class _LiveStationScreenState extends State<LiveStationScreen>
     });
   }
 
+  void _listenToMetadata() {
+    _metadataSubscription = MetadataService().metadataStream.listen((metadata) {
+      setState(() {});
+    });
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
     _audioService.dispose();
+    _metadataSubscription.cancel();
     super.dispose();
   }
 
@@ -101,38 +112,29 @@ class _LiveStationScreenState extends State<LiveStationScreen>
                     ),
                     const SizedBox(height: 32),
                     // Metadata
-                    _audioService.currentTitle == 'Loading...'
-                        ? const CircularProgressIndicator(
-                            color: Color(0xFFFFD700),
-                          )
-                        : Column(
-                            children: [
-                              Text(
-                                _audioService.currentTitle,
-                                style: TextStyle(
-                                  fontSize: constraints.maxWidth > 600
-                                      ? 24
-                                      : 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 8),
-                              _audioService.currentArtist == 'Artist'
-                                  ? const SizedBox.shrink()
-                                  : Text(
-                                      'by ${_audioService.currentArtist}',
-                                      style: TextStyle(
-                                        fontSize: constraints.maxWidth > 600
-                                            ? 18
-                                            : 16.sp,
-                                        color: Colors.white70,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                            ],
+                    Column(
+                      children: [
+                        Text(
+                          _audioService.currentTitle,
+                          style: TextStyle(
+                            fontSize: constraints.maxWidth > 600 ? 24 : 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        if (_audioService.currentArtist != '90.8 MHz')
+                          Text(
+                            'by ${_audioService.currentArtist}',
+                            style: TextStyle(
+                              fontSize: constraints.maxWidth > 600 ? 18 : 16.sp,
+                              color: Colors.white70,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                      ],
+                    ),
                     const SizedBox(height: 16),
                     // LIVE Badge
                     Container(
@@ -223,27 +225,6 @@ class _LiveStationScreenState extends State<LiveStationScreen>
               ),
             ),
           );
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF1A1A2E),
-        selectedItemColor: const Color(0xFFFFD700),
-        unselectedItemColor: Colors.white70,
-        currentIndex: 1,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Discover'),
-          BottomNavigationBarItem(icon: Icon(Icons.radio), label: 'Live'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_music),
-            label: 'Library',
-          ),
-        ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/library');
-          }
         },
       ),
     );
