@@ -14,24 +14,14 @@ A complete Flutter radio app for streaming live audio from an Icecast server, wi
 - ✅ Stream Status: Display "🔴 LIVE" or "Station Offline" dynamically.
 - ✅ Volume Control: Adjust system volume within app.
 - ✅ Audio Buffer Handling: Smooth playback with retry on buffer underrun.
-- ❌ Sleep Timer: Optional feature to stop stream after selected duration (not implemented).
-- ❌ Equalizer / Visualizer: Animated waveform or bar equalizer synced with audio output (not implemented).
 - ✅ Internet Check: Show offline alert if network disconnected.
 
-### Library / Archives
-
-- ✅ Program List: Display shows or podcasts (stored locally or fetched via API) (placeholder implemented).
-- ✅ On-Demand Playback: Play archived audio (MP3 or Icecast mount points) (seekable progress bar implemented).
-- ✅ Metadata Display: Show show name, host, date, duration (implemented).
-- ❌ Download Option: Allow users to download past episodes (optional toggle) (not implemented).
-- ❌ Search & Filter: Search by show name or host (not implemented).
 
 ### UI / UX
 
 - ✅ Splash / Intro Screen: Logo and description of station with navigation to Home.
 - ✅ Home Screen: Trending shows, search, and Discover/Live tab navigation.
 - ✅ Live Station Screen: Current live show with metadata, waveform, and controls.
-- ❌ Persistent Player: Mini player at bottom of Home when playing live or archive (not implemented).
 - ✅ Dark Theme: Deep navy (#1A1A2E) with golden accent (#FFD700).
 - ✅ Responsive Layout: Optimized for all mobile sizes and orientations.
 - ✅ Branding: Station logo & name "90.8 MHz FM-CRS".
@@ -39,8 +29,6 @@ A complete Flutter radio app for streaming live audio from an Icecast server, wi
 ### Admin / Server
 
 - ✅ Config File: Store Icecast base URL, mountpoints, and metadata URL in config.dart.
-- ❌ API Integration: Option to fetch program list from server JSON or CMS (Drupal/Strapi) (not implemented).
-- ❌ Dynamic Update: Library updates when new archive file added on server (not implemented).
 - ✅ SSL Support: Works with HTTPS Icecast endpoints.
 
 ## Setup Instructions
